@@ -31,12 +31,20 @@ variable "subnet_id" {
   description = "Subnet ID for creating the VM"
   
 }
+variable "lbid" {
+    description = "Load balancer ID"
+  
+}
 variable "vmtype" {
   description = "VM type to be deployed"
 }
 variable "vmsize" {
   description = "VM size to be deployed"
-  
 }
+variable "vm_depends_on" {
+  type = any
+  default = null
+}
+
 
 

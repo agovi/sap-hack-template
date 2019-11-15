@@ -19,9 +19,15 @@ variable "tags" {
 }
 variable "vnetprefix" {
     description = "Address prefix for the VNET"
-    default = ["172.16.1.0/24"]
+    default = ["172.16.3.0/24"]
 }
 variable "subnetprefix" {
     description = "Address prefix for subnet"
-    default  = "172.16.1.0/24"
+    default  = "172.16.3.0/24"
 }
+variable "image_id" {
+  description = "Image id to be used for VM creation"
+  default = ""
+}
+
+

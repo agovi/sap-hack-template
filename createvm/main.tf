@@ -1,4 +1,17 @@
+data "azurerm_lb_backend_address_pool" bpool {
+    count = "${var.vmtype == "sbd" ? "0" : var.vmtype == "app" ? "0" : "1"}"  
+    name = "${var.vmtype}-BackEndAddressPool"
+   loadbalancer_id = "${var.lbid}"
+}
+
+resource "azurerm_availability" "avset" {
+    resource_group_name = "${var.rgname}"
+    location = "${var.location}"
+    name =   "${var.vmtype}-avset"
+}
+
 resource "azurerm_public_ip" "sapnw-pip" {
+    depends_on = ["var.vm_depends_on"]
     name = "${var.vmname}-pip"
     location = "${var.location}"
     resource_group_name = "${var.rgname}"
@@ -14,9 +27,18 @@ resource "azurerm_network_interface" "sapnw-nic" {
           private_ip_address_allocation = "Static"
           private_ip_address = "${var.private_ip}"
           public_ip_address_id = "${azurerm_public_ip.sapnw-pip.id}"
+          load_balancer_backend_address_pools_ids = ["${data.azurerm_lb_backend_address_pool.bpool.0.id}"]
       }
         enable_accelerated_networking = "${var.vmtype == "hana" ? "true" : "false"}"
 }
+
+/*resource "azurerm_network_interface_backend_address_pool_association" "sapnw-assc" {
+  count = "${var.vmtype == "sbd" ? "0" : var.vmtype == "app" ? "0" : "1"}"  
+  network_interface_id    = "${azurerm_network_interface.sapnw-nic.id}"
+  ip_configuration_name   = "${var.vmtype}-frontend"
+  backend_address_pool_id = "${data.azurerm_lb_backend_address_pool.bpool.0.id}"
+}
+*/
 
 resource "azurerm_virtual_machine" "sapnw-vm" {
      name = "${var.vmname}"
@@ -24,6 +46,7 @@ resource "azurerm_virtual_machine" "sapnw-vm" {
      resource_group_name = "${var.rgname}"
      network_interface_ids = ["${azurerm_network_interface.sapnw-nic.id}"]
      vm_size = "${var.vmsize}"
+     availability_set_id = "${azurerm_availability.avset.id}"
      storage_image_reference {
          id = "${var.image_id}"
      }
