@@ -29,7 +29,8 @@ resource "azurerm_network_interface" "sapnw-nic" {
           private_ip_address_allocation = "Static"
           private_ip_address = "${var.private_ip}"
           public_ip_address_id = "${azurerm_public_ip.sapnw-pip.id}"
-          load_balancer_backend_address_pools_ids = ["${element(azurerm_lb_backend_address_pool.lb_pool.*.id,0)}"]
+          //load_balancer_backend_address_pools_ids = ["${element(azurerm_lb_backend_address_pool.lb_pool.*.id,count.index)}"]
+          load_balancer_backend_address_pools_ids = "${azurerm_lb_backend_address_pool.lb_pool.*.id}"
       }
         enable_accelerated_networking = "${var.vmtype == "hana" ? "true" : "false"}"
 }
