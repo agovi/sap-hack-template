@@ -20,6 +20,7 @@ resource "azurerm_public_ip" "sapnw-pip" {
     allocation_method = "Dynamic"
 }
 resource "azurerm_network_interface" "sapnw-nic" {
+      count = 1
       name = "${var.vmname}"
       location  = "${var.location}"
       resource_group_name = "${var.rgname}"
