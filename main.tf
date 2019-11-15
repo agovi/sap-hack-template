@@ -1,3 +1,7 @@
+terraform {
+  required_version = "= 0.12.7"
+}
+
 provider "azurerm" {
   version = ">=1.22.0"
 }
