@@ -4,7 +4,7 @@ data "azurerm_lb_backend_address_pool" bpool {
    loadbalancer_id = "${var.lbid}"
 }
 
-resource "azurerm_availability" "avset" {
+resource "azurerm_availability_set" "avset" {
     resource_group_name = "${var.rgname}"
     location = "${var.location}"
     name =   "${var.vmtype}-avset"
@@ -46,7 +46,7 @@ resource "azurerm_virtual_machine" "sapnw-vm" {
      resource_group_name = "${var.rgname}"
      network_interface_ids = ["${azurerm_network_interface.sapnw-nic.id}"]
      vm_size = "${var.vmsize}"
-     availability_set_id = "${azurerm_availability.avset.id}"
+     availability_set_id = "${azurerm_availability_set.avset.id}"
      storage_image_reference {
          id = "${var.image_id}"
      }
