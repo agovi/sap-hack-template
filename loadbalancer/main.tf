@@ -24,7 +24,7 @@ resource "azurerm_lb_probe" "lb_probe" {
   port                = "${var.vmtype == "nfs" ? "61000" : var.vmtype == "hana" ? "62503" : var.vmtype == "xscs" ? "62000" : "62110"}"
 }
 
-resource "azurerm_lb_rule" "lb_rule_nfs" {
+resource "azurerm_lb_rule" "lb_rule_nfs_20048T" {
   count = "${ ("${var.vmtype}" == "nfs") ? "1":"0"}"    
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
@@ -32,6 +32,48 @@ resource "azurerm_lb_rule" "lb_rule_nfs" {
   protocol                       = "tcp"
   frontend_port                  = 20048
   backend_port                   = 20048
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}
+
+resource "azurerm_lb_rule" "lb_rule_nfs_20048U" {
+  count = "${ ("${var.vmtype}" == "nfs") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-20048-U"
+  protocol                       = "udp"
+  frontend_port                  = 20048
+  backend_port                   = 20048
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}
+
+resource "azurerm_lb_rule" "lb_rule_nfs_2049U" {
+  count = "${ ("${var.vmtype}" == "nfs") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-2049-U"
+  protocol                       = "udp"
+  frontend_port                  = 2049
+  backend_port                   = 2049
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}
+
+resource "azurerm_lb_rule" "lb_rule_nfs_2049T" {
+  count = "${ ("${var.vmtype}" == "nfs") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-2049-T"
+  protocol                       = "tcp"
+  frontend_port                  = 2049
+  backend_port                   = 2049
   frontend_ip_configuration_name = "${var.vmtype}-frontend"
   enable_floating_ip             = true
   backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"

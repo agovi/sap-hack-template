@@ -1,12 +1,14 @@
-data "azurerm_lb_backend_address_pool" bpool {
-    count = "${var.vmtype == "sbd" ? "0" : var.vmtype == "app" ? "0" : "1"}"  
-    name = "${var.vmtype}-BackEndAddressPool"
-   loadbalancer_id = "${var.lbid}"
+resource "azurerm_lb_backend_address_pool" "lb_pool" {
+  count = "${var.vmtype == "sbd" ? "0" : var.vmtype == "app" ? "0" : "1"}"  
+  resource_group_name = "${var.rgname}"
+  loadbalancer_id     = "${var.lbid}"
+  name                = "${var.vmtype}-BackEndAddressPool"
 }
 
 resource "azurerm_availability_set" "avset" {
     resource_group_name = "${var.rgname}"
     location = "${var.location}"
+    managed = "true"
     name =   "${var.vmtype}-avset"
 }
 
@@ -27,7 +29,7 @@ resource "azurerm_network_interface" "sapnw-nic" {
           private_ip_address_allocation = "Static"
           private_ip_address = "${var.private_ip}"
           public_ip_address_id = "${azurerm_public_ip.sapnw-pip.id}"
-          load_balancer_backend_address_pools_ids = ["${data.azurerm_lb_backend_address_pool.bpool.0.id}"]
+          load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.lb_pool.0.id}"]
       }
         enable_accelerated_networking = "${var.vmtype == "hana" ? "true" : "false"}"
 }
