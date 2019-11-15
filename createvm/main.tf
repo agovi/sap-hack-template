@@ -20,7 +20,6 @@ resource "azurerm_public_ip" "sapnw-pip" {
     allocation_method = "Dynamic"
 }
 resource "azurerm_network_interface" "sapnw-nic" {
-      count = 1
       name = "${var.vmname}"
       location  = "${var.location}"
       resource_group_name = "${var.rgname}"
@@ -30,7 +29,7 @@ resource "azurerm_network_interface" "sapnw-nic" {
           private_ip_address_allocation = "Static"
           private_ip_address = "${var.private_ip}"
           public_ip_address_id = "${azurerm_public_ip.sapnw-pip.id}"
-          load_balancer_backend_address_pools_ids = ["${element(azurerm_lb_backend_address_pool.lb_pool.*.id,count.index)}"]
+          load_balancer_backend_address_pools_ids = ["${element(azurerm_lb_backend_address_pool.lb_pool.*.id,0)}"]
       }
         enable_accelerated_networking = "${var.vmtype == "hana" ? "true" : "false"}"
 }
