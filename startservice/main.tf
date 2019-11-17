@@ -11,7 +11,7 @@ resource "azurerm_virtual_machine_extension" "pacemaker-vmext" {
     type_handler_version = "2.0"
     settings = <<SETTINGS
     {
-      "commandToExecute" : "[ rcpacemaker start ]"
+      "commandToExecute" : "[ systemctl stop pacemaker ; systemctl start pacemaker ; systemctl status pacemaker >> /tmp/output.txt]"
     }
     SETTINGS
 }
@@ -29,7 +29,7 @@ resource "azurerm_virtual_machine_extension" "startapp-vmext" {
     type_handler_version = "2.0"
     settings = <<SETTINGS
     {
-      "commandToExecute" : "[ sapcontrol -nr 00 -function start ]"
+      "commandToExecute" : "[ sapcontrol -nr 00 -function StartService TST ;  sapcontrol -nr 00 -function Start ]"
     }
     SETTINGS
 }
