@@ -125,7 +125,7 @@ module "create_nfs_vm1" {
     lbid = "${module.nfs-lb.lboutput}"
 }
 
-/*module "pacemaker_nfs_vm0" {
+module "pacemaker_nfs_vm0" {
     source = "./startservice"
     vmext_depends_on = ["${module.create_nfs_vm0.vmoutput}"]
     vmname = "${local.nfsvm0.vmname}"
@@ -142,7 +142,7 @@ module "pacemaker_nfs_vm1" {
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "nfs"
 }
-*/
+
 
 module "create_xscs_vm0" {
     source = "./createvm"
@@ -176,9 +176,9 @@ module "create_xscs_vm1" {
     lbid = "${module.xscs-lb.lboutput}"
 }
 
-/*module "pacemaker_xscs_vm0" {
+module "pacemaker_xscs_vm0" {
     source = "./startservice"
-    vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}"]
+    vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.pacemaker_nfs_vm0.vmoutput}","${module.pacemaker_nfs_vm1.vmoutput}"]
     vmname = "${local.xscsvm0.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
@@ -187,13 +187,13 @@ module "create_xscs_vm1" {
 
 module "pacemaker_xscs_vm1" {
     source = "./startservice"
-    vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}"]
+    vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.pacemaker_nfs_vm0.vmoutput}","${module.pacemaker_nfs_vm1.vmoutput}"]
     vmname = "${local.xscsvm1.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "xscs"
 }
-*/
+
 
 module "create_hana_vm0" {
     source = "./createvm"
