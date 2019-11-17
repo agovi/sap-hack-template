@@ -213,7 +213,7 @@ module "create_hana_vm0" {
 
 module "create_hana_vm1" {
     source = "./createvm"
-    vm_depends_on = ["${module.create_sbd_vm0.vmoutput}"]
+    vm_depends_on = ["${module.create_sbd_vm0.vmoutput}","${module.hana-lb.lboutput}"]
     vmname = "${local.hanavm1.vmname}"
     vmtype = "hana"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -247,7 +247,7 @@ module "pacemaker_hana_vm1" {
 */
 module "create_app_vm" {
     source = "./createvm"
-    vm_depends_on = ["${module.create_nfs_vm0.vmoutput}","${module.create_nfs_vm1.vmoutput}"]
+    vm_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.create_hana_vm0.vmoutput}","${module.create_hana_vm1.vmoutput}"]
     vmname = "${local.appvm.vmname}"
     vmtype = "app"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -263,7 +263,7 @@ module "create_app_vm" {
 
 module "appstart_app_vm" {
     source = "./startservice"
-    vmext_depends_on = ["${module.pacemaker_hana_vm0.vmoutput}","${module.pacemaker_hana_vm1.vmoutput}","${module.pacemaker_xscs_vm0.vmoutput}","${module.pacemaker_xscs_vm1.vmoutput}"]
+    vmext_depends_on = ["${module.create_app_vm.vmoutput}"]
     vmname = "${local.appvm.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
