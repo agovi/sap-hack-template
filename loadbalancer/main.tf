@@ -94,7 +94,7 @@ resource "azurerm_lb_rule" "lb_rule_hana" {
   probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
 }
 
-resource "azurerm_lb_rule" "lb_rule_xscs" {
+resource "azurerm_lb_rule" "lb_rule_xscs_32xx" {
   count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
@@ -108,7 +108,63 @@ resource "azurerm_lb_rule" "lb_rule_xscs" {
   probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
 }
 
-resource "azurerm_lb_rule" "lb_rule_ers" {
+resource "azurerm_lb_rule" "lb_rule_xscs_36xx" {
+  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-3600"
+  protocol                       = "tcp"
+  frontend_port                  = 3600
+  backend_port                   = 3600
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}
+
+resource "azurerm_lb_rule" "lb_rule_xscs_39xx" {
+  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-3900"
+  protocol                       = "tcp"
+  frontend_port                  = 3900
+  backend_port                   = 3900
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}
+
+resource "azurerm_lb_rule" "lb_rule_xscs_81xx" {
+  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-8100"
+  protocol                       = "tcp"
+  frontend_port                  = 8100
+  backend_port                   = 8100
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}
+
+resource "azurerm_lb_rule" "lb_rule_xscs_5xx13" {
+  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-50013"
+  protocol                       = "tcp"
+  frontend_port                  = 50013
+  backend_port                   = 50013
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}
+
+resource "azurerm_lb_rule" "lb_rule_ers_33xx" {
   count = "${ ("${var.vmtype}" == "ers") ? "1":"0"}"    
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
@@ -122,3 +178,30 @@ resource "azurerm_lb_rule" "lb_rule_ers" {
   probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
 }
 
+resource "azurerm_lb_rule" "lb_rule_ers_32xx" {
+  count = "${ ("${var.vmtype}" == "ers") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-3210"
+  protocol                       = "tcp"
+  frontend_port                  = 3210
+  backend_port                   = 3210
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}
+
+resource "azurerm_lb_rule" "lb_rule_ers_5xx13" {
+  count = "${ ("${var.vmtype}" == "ers") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-51013"
+  protocol                       = "tcp"
+  frontend_port                  = 51013
+  backend_port                   = 51013
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+}

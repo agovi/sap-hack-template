@@ -1,5 +1,6 @@
 variable "rgname" {
     description = "Name of the resource group to deploy the resources"
+    default = "sapclusterhack"
  }
 variable "location" {
     description = "Specifies the location to deploy the resources"
@@ -11,6 +12,7 @@ variable "adminuser" {
 }
 variable "adminpassword" {
   description = "Password for logging in to the Virtual Machines"
+  default = "Welcome@123456"
 }
 variable "tags" {
   description = "A map of tags to the deployed resources. Empty by default."

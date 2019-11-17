@@ -40,7 +40,7 @@ locals {
   }  
  hanavm0 = {
     vmname = "TST-hana-vm-0"
-    vmimage = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-cluster-images/providers/Microsoft.Compute/galleries/s4sleshana/images/sleshana/versions/1.0.0"
+    vmimage = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-cluster-images/providers/Microsoft.Compute/galleries/s4sleshana/images/sleshana/versions/2.0.0"
     #vmimage = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-cluster-images/providers/Microsoft.Compute/images/TST-hana-vm-0-image"
     vmpip = "172.16.3.10"
     vmsize = "Standard_E8s_v3"
@@ -49,7 +49,7 @@ locals {
 
  hanavm1 = {
     vmname = "TST-hana-vm-1"
-    vmimage = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-cluster-images/providers/Microsoft.Compute/galleries/s4sleshana/images/sleshana1/versions/1.0.0"
+    vmimage = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-cluster-images/providers/Microsoft.Compute/galleries/s4sleshana/images/sleshana1/versions/2.0.0"
     #vmimage = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-cluster-images/providers/Microsoft.Compute/images/TST-hana-vm-1-image"
     vmpip = "172.16.3.13"
     vmsize = "Standard_E8s_v3"

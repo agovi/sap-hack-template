@@ -60,7 +60,7 @@ module "xscs-lb"{
     subnet = "${azurerm_subnet.sap-subnet.id}"
 }
 
-/*module "ers-lb"{
+module "ers-lb"{
     source = "./loadbalancer"
     vmtype = "ers"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -68,7 +68,6 @@ module "xscs-lb"{
     lbpip = "${local.xscsvm1.lbpip}"
     subnet = "${azurerm_subnet.sap-subnet.id}"
 }
-*/
 
 module "hana-lb" {
     source = "./loadbalancer"
@@ -141,7 +140,7 @@ module "pacemaker_nfs_vm1" {
     vmname = "${local.nfsvm1.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
-    vmtype = "nfs"
+    vmtype = "nfs1"
 }
 
 
@@ -192,7 +191,7 @@ module "pacemaker_xscs_vm1" {
     vmname = "${local.xscsvm1.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
-    vmtype = "xscs"
+    vmtype = "ers"
 }
 
 module "create_hana_vm0" {
