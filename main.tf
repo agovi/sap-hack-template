@@ -124,7 +124,7 @@ module "create_nfs_vm1" {
     image_id = "${local.nfsvm1.vmimage}"
     lbid = "${module.nfs-lb.lboutput}"
 }
-
+/*
 module "pacemaker_nfs_vm0" {
     source = "./startservice"
     vmext_depends_on = ["${module.create_nfs_vm0.vmoutput}"]
@@ -142,7 +142,7 @@ module "pacemaker_nfs_vm1" {
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "nfs"
 }
-
+*/
 
 module "create_xscs_vm0" {
     source = "./createvm"
@@ -176,7 +176,7 @@ module "create_xscs_vm1" {
     lbid = "${module.xscs-lb.lboutput}"
 }
 
-module "pacemaker_xscs_vm0" {
+/*module "pacemaker_xscs_vm0" {
     source = "./startservice"
     vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.pacemaker_nfs_vm0.vmoutput}","${module.pacemaker_nfs_vm1.vmoutput}"]
     vmname = "${local.xscsvm0.vmname}"
@@ -193,6 +193,7 @@ module "pacemaker_xscs_vm1" {
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "xscs"
 }
+*/
 
 
 module "create_hana_vm0" {
