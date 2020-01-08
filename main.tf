@@ -124,7 +124,7 @@ module "create_nfs_vm1" {
     image_id = "${local.nfsvm1.vmimage}"
     lbid = "${module.nfs-lb.lboutput}"
 }
-
+/*
 module "pacemaker_nfs_vm0" {
     source = "./startservice"
     vmext_depends_on = ["${module.create_nfs_vm0.vmoutput}"]
@@ -142,11 +142,11 @@ module "pacemaker_nfs_vm1" {
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "nfs"
 }
-
+*/
 
 module "create_xscs_vm0" {
     source = "./createvm"
-    vm_depends_on = ["${module.pacemaker_nfs_vm0.vmoutput}","${module.pacemaker_nfs_vm1.vmoutput}","${module.xscs-lb.lboutput}"]
+    vm_depends_on = ["${module.create_nfs_vm0.vmoutput}","${module.create_nfs_vm1.vmoutput}","${module.xscs-lb.lboutput}"]
     vmname = "${local.xscsvm0.vmname}"
     vmtype = "xscs"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -162,7 +162,7 @@ module "create_xscs_vm0" {
 
 module "create_xscs_vm1" {
     source = "./createvm"
-    vm_depends_on = ["${module.pacemaker_nfs_vm0.vmoutput}","${module.pacemaker_nfs_vm1.vmoutput}","${module.xscs-lb.lboutput}"]
+    vm_depends_on = ["${module.create_nfs_vm0.vmoutput}","${module.create_nfs_vm1.vmoutput}","${module.xscs-lb.lboutput}"]
     vmname = "${local.xscsvm1.vmname}"
     vmtype = "xscs"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -176,9 +176,9 @@ module "create_xscs_vm1" {
     lbid = "${module.xscs-lb.lboutput}"
 }
 
-module "pacemaker_xscs_vm0" {
+/*module "pacemaker_xscs_vm0" {
     source = "./startservice"
-    vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}"]
+    vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.pacemaker_nfs_vm0.vmoutput}","${module.pacemaker_nfs_vm1.vmoutput}"]
     vmname = "${local.xscsvm0.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
@@ -187,12 +187,14 @@ module "pacemaker_xscs_vm0" {
 
 module "pacemaker_xscs_vm1" {
     source = "./startservice"
-    vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}"]
+    vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.pacemaker_nfs_vm0.vmoutput}","${module.pacemaker_nfs_vm1.vmoutput}"]
     vmname = "${local.xscsvm1.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "xscs"
 }
+*/
+
 
 module "create_hana_vm0" {
     source = "./createvm"
@@ -212,7 +214,7 @@ module "create_hana_vm0" {
 
 module "create_hana_vm1" {
     source = "./createvm"
-    vm_depends_on = ["${module.create_sbd_vm0.vmoutput}"]
+    vm_depends_on = ["${module.create_sbd_vm0.vmoutput}","${module.hana-lb.lboutput}"]
     vmname = "${local.hanavm1.vmname}"
     vmtype = "hana"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -226,7 +228,7 @@ module "create_hana_vm1" {
     lbid = "${module.hana-lb.lboutput}"
 }
 
-module "pacemaker_hana_vm0" {
+/*module "pacemaker_hana_vm0" {
     source = "./startservice"
     vmext_depends_on = ["${module.create_hana_vm0.vmoutput}","${module.create_hana_vm1.vmoutput}"]
     vmname = "${local.hanavm0.vmname}"
@@ -243,10 +245,10 @@ module "pacemaker_hana_vm1" {
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "hana"
 }
-
+*/
 module "create_app_vm" {
     source = "./createvm"
-    vm_depends_on = ["${module.create_nfs_vm0.vmoutput}","${module.create_nfs_vm1.vmoutput}"]
+    vm_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.create_hana_vm0.vmoutput}","${module.create_hana_vm1.vmoutput}"]
     vmname = "${local.appvm.vmname}"
     vmtype = "app"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -262,7 +264,7 @@ module "create_app_vm" {
 
 module "appstart_app_vm" {
     source = "./startservice"
-    vmext_depends_on = ["${module.pacemaker_hana_vm0.vmoutput}","${module.pacemaker_hana_vm1.vmoutput}","${module.pacemaker_xscs_vm0.vmoutput}","${module.pacemaker_xscs_vm1.vmoutput}"]
+    vmext_depends_on = ["${module.create_app_vm.vmoutput}"]
     vmname = "${local.appvm.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
