@@ -3,19 +3,23 @@ variable "rgname" {
  }
 variable "location" {
     description = "Specifies the location to deploy the resources"
-    default = "WestEurope"
 }
 variable "vmname" {
-  description = "Namw of the VM to be created"  
+  description = "Name of the VM to be created"  
 }
 
 variable "adminuser" {
   description = "Username for logging in to the Virtual Machines"
-  default = "azureuser"
 }
-variable "adminpassword" {
+
+/*variable "adminpassword" {
   description = "Password for logging in to the Virtual Machines"
+}*/
+
+variable "sshkeypath" {
+  description = "Path for the SSH keys to be used"
 }
+
 variable "tags" {
   description = "A map of tags to the deployed resources. Empty by default."
   type        = "map"

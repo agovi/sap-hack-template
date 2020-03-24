@@ -11,7 +11,7 @@ resource "azurerm_virtual_machine_extension" "pacemaker-vmext" {
     type_handler_version = "2.0"
     settings = <<SETTINGS
     {
-      "commandToExecute" : "[ systemctl stop pacemaker ; systemctl start pacemaker ; systemctl status pacemaker >> /tmp/output.txt]"
+      "commandToExecute" : "[ crm cluster stop ; crm cluster start ; crm cluster status >> /tmp/output.txt]"
     }
     SETTINGS
 }

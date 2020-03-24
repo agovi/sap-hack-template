@@ -60,15 +60,6 @@ module "xscs-lb"{
     subnet = "${azurerm_subnet.sap-subnet.id}"
 }
 
-/*module "ers-lb"{
-    source = "./loadbalancer"
-    vmtype = "ers"
-    location = "${azurerm_resource_group.sap-cluster-openhack.location}"
-    rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
-    lbpip = "${local.xscsvm1.lbpip}"
-    subnet = "${azurerm_subnet.sap-subnet.id}"
-}*/
-
 module "hana-lb" {
     source = "./loadbalancer"
     vmtype = "hana"
@@ -88,7 +79,8 @@ module "create_sbd_vm0" {
     subnet_id = "${azurerm_subnet.sap-subnet.id}"
     vmsize = "${local.sbdvm.vmsize}"
     adminuser = "${var.adminuser}"
-    adminpassword = "${var.adminpassword}"
+    //adminpassword = "${var.adminpassword}"
+    sshkeypath = "${var.sshkeypath}"
     private_ip = "${local.sbdvm.vmpip}"
     image_id = "${local.sbdvm.vmimage}"
     lbid = ""
@@ -103,7 +95,8 @@ module "create_nfs_vm0" {
     subnet_id = "${azurerm_subnet.sap-subnet.id}"
     vmsize = "${local.nfsvm0.vmsize}"
     adminuser = "${var.adminuser}"
-    adminpassword = "${var.adminpassword}"
+    //adminpassword = "${var.adminpassword}"
+    sshkeypath = "${var.sshkeypath}"
     private_ip = "${local.nfsvm0.vmpip}"
     image_id = "${local.nfsvm0.vmimage}"
     lbid = "${module.nfs-lb.lboutput}"
@@ -119,15 +112,16 @@ module "create_nfs_vm1" {
     subnet_id = "${azurerm_subnet.sap-subnet.id}"
     vmsize = "${local.nfsvm1.vmsize}"
     adminuser = "${var.adminuser}"
-    adminpassword = "${var.adminpassword}"
+    //adminpassword = "${var.adminpassword}"
+    sshkeypath = "${var.sshkeypath}"
     private_ip = "${local.nfsvm1.vmpip}"
     image_id = "${local.nfsvm1.vmimage}"
     lbid = "${module.nfs-lb.lboutput}"
 }
-/*
+
 module "pacemaker_nfs_vm0" {
     source = "./startservice"
-    vmext_depends_on = ["${module.create_nfs_vm0.vmoutput}"]
+    vmext_depends_on = ["${module.create_nfs_vm0.vmoutput}","${module.create_nfs_vm1.vmoutput}" ]
     vmname = "${local.nfsvm0.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
@@ -136,13 +130,13 @@ module "pacemaker_nfs_vm0" {
 
 module "pacemaker_nfs_vm1" {
     source = "./startservice"
-    vmext_depends_on = ["${module.create_nfs_vm1.vmoutput}"]
+    vmext_depends_on = ["${module.create_nfs_vm0.vmoutput}","${module.create_nfs_vm1.vmoutput}" ]
     vmname = "${local.nfsvm1.vmname}"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "nfs"
 }
-*/
+
 
 module "create_xscs_vm0" {
     source = "./createvm"
@@ -154,7 +148,8 @@ module "create_xscs_vm0" {
     subnet_id = "${azurerm_subnet.sap-subnet.id}"
     vmsize = "${local.xscsvm0.vmsize}"
     adminuser = "${var.adminuser}"
-    adminpassword = "${var.adminpassword}"
+    //adminpassword = "${var.adminpassword}"
+    sshkeypath = "${var.sshkeypath}"
     private_ip = "${local.xscsvm0.vmpip}"
     image_id = "${local.xscsvm0.vmimage}"
     lbid = "${module.xscs-lb.lboutput}"
@@ -170,13 +165,14 @@ module "create_xscs_vm1" {
     subnet_id = "${azurerm_subnet.sap-subnet.id}"
     vmsize = "${local.xscsvm1.vmsize}"
     adminuser = "${var.adminuser}"
-    adminpassword = "${var.adminpassword}"
+    //adminpassword = "${var.adminpassword}"
+    sshkeypath = "${var.sshkeypath}"
     private_ip = "${local.xscsvm1.vmpip}"
     image_id = "${local.xscsvm1.vmimage}"
     lbid = "${module.xscs-lb.lboutput}"
 }
 
-/*module "pacemaker_xscs_vm0" {
+module "pacemaker_xscs_vm0" {
     source = "./startservice"
     vmext_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.pacemaker_nfs_vm0.vmoutput}","${module.pacemaker_nfs_vm1.vmoutput}"]
     vmname = "${local.xscsvm0.vmname}"
@@ -193,8 +189,6 @@ module "pacemaker_xscs_vm1" {
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "xscs"
 }
-*/
-
 
 module "create_hana_vm0" {
     source = "./createvm"
@@ -206,7 +200,8 @@ module "create_hana_vm0" {
     subnet_id = "${azurerm_subnet.sap-subnet.id}"
     vmsize = "${local.hanavm0.vmsize}"
     adminuser = "${var.adminuser}"
-    adminpassword = "${var.adminpassword}"
+    //adminpassword = "${var.adminpassword}"
+    sshkeypath = "${var.sshkeypath}"
     private_ip = "${local.hanavm0.vmpip}"
     image_id = "${local.hanavm0.vmimage}"
     lbid = "${module.hana-lb.lboutput}"
@@ -222,13 +217,14 @@ module "create_hana_vm1" {
     subnet_id = "${azurerm_subnet.sap-subnet.id}"
     vmsize = "${local.hanavm1.vmsize}"
     adminuser = "${var.adminuser}"
-    adminpassword = "${var.adminpassword}"
+    //adminpassword = "${var.adminpassword}"
+    sshkeypath = "${var.sshkeypath}"
     private_ip = "${local.hanavm1.vmpip}"
     image_id = "${local.hanavm1.vmimage}"
     lbid = "${module.hana-lb.lboutput}"
 }
 
-/*module "pacemaker_hana_vm0" {
+module "pacemaker_hana_vm0" {
     source = "./startservice"
     vmext_depends_on = ["${module.create_hana_vm0.vmoutput}","${module.create_hana_vm1.vmoutput}"]
     vmname = "${local.hanavm0.vmname}"
@@ -245,10 +241,10 @@ module "pacemaker_hana_vm1" {
     rgname = "${azurerm_resource_group.sap-cluster-openhack.name}"
     vmtype = "hana"
 }
-*/
+
 module "create_app_vm" {
     source = "./createvm"
-    vm_depends_on = ["${module.create_xscs_vm0.vmoutput}","${module.create_xscs_vm1.vmoutput}","${module.create_hana_vm0.vmoutput}","${module.create_hana_vm1.vmoutput}"]
+    vm_depends_on = ["${module.pacemaker_hana_vm0.vmoutput}","${module.pacemaker_hana_vm1.vmoutput}","${module.pacemaker_xscs_vm0.vmoutput}","${module.pacemaker_xscs_vm1.vmoutput}"]
     vmname = "${local.appvm.vmname}"
     vmtype = "app"
     location = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -256,7 +252,8 @@ module "create_app_vm" {
     subnet_id = "${azurerm_subnet.sap-subnet.id}"
     vmsize = "${local.appvm.vmsize}"
     adminuser = "${var.adminuser}"
-    adminpassword = "${var.adminpassword}"
+    //adminpassword = "${var.adminpassword}"
+    sshkeypath = "${var.sshkeypath}"
     private_ip = "${local.appvm.vmpip}"
     image_id = "${local.appvm.vmimage}"
     lbid = ""

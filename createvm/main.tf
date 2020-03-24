@@ -9,6 +9,7 @@ resource "azurerm_availability_set" "avset" {
     resource_group_name = "${var.rgname}"
     location = "${var.location}"
     managed = "true"
+    platform_fault_domain_count = 2
     name =   "${var.vmtype}-avset"
 }
 
@@ -57,14 +58,18 @@ resource "azurerm_virtual_machine" "sapnw-vm" {
             name = "${var.vmname}-osdisk"
             caching = "ReadWrite"
             create_option = "FromImage"
-            managed_disk_type = "Standard_LRS"
+            managed_disk_type = "Premium_LRS"
         }
         os_profile {
             computer_name =  "${var.vmname}"
             admin_username = "${var.adminuser}"
-            admin_password = "${var.adminpassword}"
+            //admin_password = "${var.adminpassword}"
         }
         os_profile_linux_config{
-            disable_password_authentication = "false"
+            disable_password_authentication = "true"
+               ssh_keys {
+               key_data = file(var.sshkeypath)
+               path = "/home/${var.adminuser}/.ssh/authorized_keys"
+              } 
         }
 }
