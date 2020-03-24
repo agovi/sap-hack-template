@@ -29,7 +29,7 @@ resource "azurerm_virtual_machine_extension" "startapp-vmext" {
     type_handler_version = "2.0"
     settings = <<SETTINGS
     {
-      "commandToExecute" : "[ sapcontrol -nr 00 -function StartService TST ;  sapcontrol -nr 00 -function Start ]"
+      "commandToExecute" : "[ su - tstadm -c \"/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function StartService TST \" ; su - tstadm -c \"/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function Start\" ]"
     }
     SETTINGS
 }
