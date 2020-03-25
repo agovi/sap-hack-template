@@ -3,8 +3,8 @@ variable "rgname" {
   default     = "sap-openhack"
 }
 variable "location" {
-  description = "Specifies the location to deploy the resources"
-  default     = "WestEurope"
+  description = "Specify the location to deploy the resources"
+  //default     = "WestEurope"
 }
 variable "adminuser" {
   description = "Username for logging in to the Virtual Machines"
@@ -17,7 +17,7 @@ variable "adminuser" {
 
 variable "sshkeypath" {
   description = "Path for the SSH keys to be used"
-  default     = "~/.ssh/id_rsa.pub"
+  //default     = "~/.ssh/id_rsa.pub"
 }
 variable "tags" {
   description = "A map of tags to the deployed resources. Empty by default."
