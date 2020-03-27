@@ -31,7 +31,7 @@ resource "azurerm_network_security_rule" "sap-access-rule" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_ranges      = ["3200","3600","3900","3300"]
+  destination_port_ranges     = ["3200", "3600", "3900", "3300"]
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = "${azurerm_resource_group.sap-cluster-openhack.name}"

@@ -35,106 +35,106 @@ variable "subnetprefix" {
 
 variable "sbd_config" {
   description = "Parameters requried to build SBD VM"
-  type = "map"
+  type        = "map"
   default = {
-    vmname = ""
-    imageid = ""
+    vmname    = ""
+    imageid   = ""
     privateip = ""
-    vmsize = ""
+    vmsize    = ""
 
   }
 }
 
 variable "nfs_node0_config" {
   description = "Parameters requried to build NFS Node 0"
-  type = "map"
+  type        = "map"
   default = {
-    vmname = ""
-    imageid = ""
+    vmname    = ""
+    imageid   = ""
     privateip = ""
-    vmsize = ""
+    vmsize    = ""
 
   }
 }
 
 variable "nfs_node1_config" {
   description = "Parameters requried to build NFS Node 1"
-  type = "map"
+  type        = "map"
   default = {
-    vmname = ""
-    imageid = ""
+    vmname    = ""
+    imageid   = ""
     privateip = ""
-    vmsize = ""
+    vmsize    = ""
 
   }
 }
 
 variable "hana_node0_config" {
   description = "Parameters requried to build HANA Node 0"
-  type = "map"
+  type        = "map"
   default = {
-    vmname = ""
-    imageid = ""
+    vmname    = ""
+    imageid   = ""
     privateip = ""
-    vmsize = ""
+    vmsize    = ""
 
   }
 }
 
 variable "hana_node1_config" {
   description = "Parameters requried to build HANA Node 1"
-  type = "map"
+  type        = "map"
   default = {
-    vmname = ""
-    imageid = ""
+    vmname    = ""
+    imageid   = ""
     privateip = ""
-    vmsize = ""
+    vmsize    = ""
 
   }
 }
 
 variable "xscs_node0_config" {
   description = "Parameters requried to build ASCS/ERS Node 0"
-  type = "map"
+  type        = "map"
   default = {
-    vmname = ""
-    imageid = ""
+    vmname    = ""
+    imageid   = ""
     privateip = ""
-    vmsize = ""
+    vmsize    = ""
 
   }
 }
 
 variable "xscs_node1_config" {
   description = "Parameters requried to build ASCS/ERS Node 1"
-  type = "map"
+  type        = "map"
   default = {
-    vmname = ""
-    imageid = ""
+    vmname    = ""
+    imageid   = ""
     privateip = ""
-    vmsize = ""
+    vmsize    = ""
 
   }
 }
 
 variable "app_config" {
   description = "Parameters requried to build SAP App server"
-  type = "map"
+  type        = "map"
   default = {
-    vmname = ""
-    imageid = ""
+    vmname    = ""
+    imageid   = ""
     privateip = ""
-    vmsize = ""
+    vmsize    = ""
 
   }
 }
 
 variable "lb_config" {
   description = "Parameters requried for load balancers"
-  type = "map"
+  type        = "map"
   default = {
     hanapip = ""
-    nfspip = ""
+    nfspip  = ""
     xscspip = ""
   }
 }
