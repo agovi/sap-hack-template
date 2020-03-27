@@ -32,9 +32,110 @@ variable "subnetprefix" {
   description = "Address prefix for subnet"
   default     = "172.16.3.0/24"
 }
-variable "image_id" {
-  description = "Image id to be used for VM creation"
-  default     = ""
+
+variable "sbd_config" {
+  description = "Parameters requried to build SBD VM"
+  type = "map"
+  default = {
+    vmname = ""
+    imageid = ""
+    privateip = ""
+    vmsize = ""
+
+  }
 }
 
+variable "nfs_node0_config" {
+  description = "Parameters requried to build NFS Node 0"
+  type = "map"
+  default = {
+    vmname = ""
+    imageid = ""
+    privateip = ""
+    vmsize = ""
+
+  }
+}
+
+variable "nfs_node1_config" {
+  description = "Parameters requried to build NFS Node 1"
+  type = "map"
+  default = {
+    vmname = ""
+    imageid = ""
+    privateip = ""
+    vmsize = ""
+
+  }
+}
+
+variable "hana_node0_config" {
+  description = "Parameters requried to build HANA Node 0"
+  type = "map"
+  default = {
+    vmname = ""
+    imageid = ""
+    privateip = ""
+    vmsize = ""
+
+  }
+}
+
+variable "hana_node1_config" {
+  description = "Parameters requried to build HANA Node 1"
+  type = "map"
+  default = {
+    vmname = ""
+    imageid = ""
+    privateip = ""
+    vmsize = ""
+
+  }
+}
+
+variable "xscs_node0_config" {
+  description = "Parameters requried to build ASCS/ERS Node 0"
+  type = "map"
+  default = {
+    vmname = ""
+    imageid = ""
+    privateip = ""
+    vmsize = ""
+
+  }
+}
+
+variable "xscs_node1_config" {
+  description = "Parameters requried to build ASCS/ERS Node 1"
+  type = "map"
+  default = {
+    vmname = ""
+    imageid = ""
+    privateip = ""
+    vmsize = ""
+
+  }
+}
+
+variable "app_config" {
+  description = "Parameters requried to build SAP App server"
+  type = "map"
+  default = {
+    vmname = ""
+    imageid = ""
+    privateip = ""
+    vmsize = ""
+
+  }
+}
+
+variable "lb_config" {
+  description = "Parameters requried for load balancers"
+  type = "map"
+  default = {
+    hanapip = ""
+    nfspip = ""
+    xscspip = ""
+  }
+}
 
