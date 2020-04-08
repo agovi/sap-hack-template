@@ -92,6 +92,22 @@ resource "azurerm_lb_rule" "lb_rule_hana" {
   enable_floating_ip             = true
   backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
   probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+  idle_timeout_in_minutes        =  30
+}
+
+resource "azurerm_lb_rule" "lb_rule_hana_50013" {
+  count = "${ ("${var.vmtype}" == "hana") ? "1":"0"}"    
+  resource_group_name            = "${var.rgname}"
+  loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
+  name                           = "lb-50013"
+  protocol                       = "tcp"
+  frontend_port                  = 50013
+  backend_port                   = 50013
+  frontend_ip_configuration_name = "${var.vmtype}-frontend"
+  enable_floating_ip             = true
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
+  idle_timeout_in_minutes        =  30
 }
 
 resource "azurerm_lb_rule" "lb_rule_xscs_32xx" {

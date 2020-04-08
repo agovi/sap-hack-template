@@ -1,18 +1,23 @@
 variable "rgname" {
-    description = "Name of the resource group to deploy the resources"
-    default = "sapclusterhack"
- }
+  description = "Name of the resource group to deploy the resources"
+  default     = "sap-openhack"
+}
 variable "location" {
-    description = "Specifies the location to deploy the resources"
-    default = "WestEurope"
+  description = "Specify the location to deploy the resources"
+  //default     = "WestEurope"
 }
 variable "adminuser" {
   description = "Username for logging in to the Virtual Machines"
-  default = "azureuser"
+  default     = "azureuser"
 }
-variable "adminpassword" {
+/*variable "adminpassword" {
   description = "Password for logging in to the Virtual Machines"
-  default = "Welcome@123456"
+}
+*/
+
+variable "sshkeypath" {
+  description = "Path for the SSH keys to be used"
+  //default     = "~/.ssh/id_rsa.pub"
 }
 variable "tags" {
   description = "A map of tags to the deployed resources. Empty by default."
@@ -20,16 +25,117 @@ variable "tags" {
   default     = {}
 }
 variable "vnetprefix" {
-    description = "Address prefix for the VNET"
-    default = ["172.16.3.0/24"]
+  description = "Address prefix for the VNET"
+  default     = ["172.16.3.0/24"]
 }
 variable "subnetprefix" {
-    description = "Address prefix for subnet"
-    default  = "172.16.3.0/24"
-}
-variable "image_id" {
-  description = "Image id to be used for VM creation"
-  default = ""
+  description = "Address prefix for subnet"
+  default     = "172.16.3.0/24"
 }
 
+variable "sbd_config" {
+  description = "Parameters requried to build SBD VM"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
+}
+
+variable "nfs_node0_config" {
+  description = "Parameters requried to build NFS Node 0"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
+}
+
+variable "nfs_node1_config" {
+  description = "Parameters requried to build NFS Node 1"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
+}
+
+variable "hana_node0_config" {
+  description = "Parameters requried to build HANA Node 0"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
+}
+
+variable "hana_node1_config" {
+  description = "Parameters requried to build HANA Node 1"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
+}
+
+variable "xscs_node0_config" {
+  description = "Parameters requried to build ASCS/ERS Node 0"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
+}
+
+variable "xscs_node1_config" {
+  description = "Parameters requried to build ASCS/ERS Node 1"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
+}
+
+variable "app_config" {
+  description = "Parameters requried to build SAP App server"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
+}
+
+variable "lb_config" {
+  description = "Parameters requried for load balancers"
+  type        = "map"
+  default = {
+    hanapip = ""
+    nfspip  = ""
+    xscspip = ""
+  }
+}
 
