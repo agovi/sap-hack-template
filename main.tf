@@ -1,5 +1,5 @@
 provider "azurerm" {
-  version = ">=1.22.0"
+  version = "=1.34.0"
 }
 resource "azurerm_resource_group" "sap-cluster-openhack" {
   name     = "${var.rgname}"
