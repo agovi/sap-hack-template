@@ -13,7 +13,7 @@ resource "azurerm_availability_set" "avset" {
     name =   "${var.vmtype}-avset"
 }
 
-resource "azurerm_public_ip" "sapnw-pip" {
+resource "azurerm_public_ip" "jb-pip" {
     count = "${var.vmtype == "jb" ? "1" : "0"}"  
     depends_on = ["var.vm_depends_on"]
     name = "${var.vmname}-pip"
@@ -30,7 +30,7 @@ resource "azurerm_network_interface" "sapnw-nic" {
           subnet_id = "${var.subnet_id}"
           private_ip_address_allocation = "Static"
           private_ip_address = "${var.private_ip}"
-          //public_ip_address_id = "${azurerm_public_ip.sapnw-pip.id}"
+          //public_ip_address_id = "${azurerm_public_ip.jb-pip.id}"
           //load_balancer_backend_address_pools_ids = ["${element(azurerm_lb_backend_address_pool.lb_pool.*.id,count.index)}"]
           load_balancer_backend_address_pools_ids = "${azurerm_lb_backend_address_pool.lb_pool.*.id}"
       }
@@ -46,7 +46,8 @@ resource "azurerm_network_interface" "jb-nic" {
           subnet_id = "${var.subnet_id}"
           private_ip_address_allocation = "Static"
           private_ip_address = "${var.private_ip}"
-          public_ip_address_id = "${azurerm_public_ip.sapnw-pip.id}"
+          //public_ip_address_id = "${      azurerm_public_ip.jb-pip.id}"
+          public_ip_address_id = "${element(azurerm_public_ip.jb-pip.*.id,0)}"
           //load_balancer_backend_address_pools_ids = ["${element(azurerm_lb_backend_address_pool.lb_pool.*.id,count.index)}"]
           //load_balancer_backend_address_pools_ids = "${azurerm_lb_backend_address_pool.lb_pool.*.id}"
       }
