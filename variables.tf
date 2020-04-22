@@ -1,6 +1,6 @@
 variable "rgname" {
   description = "Name of the resource group to deploy the resources"
-  default     = "sap-open-hack"
+  //default     = "sap-open-hack"
 }
 variable "location" {
   description = "Specify the location to deploy the resources"

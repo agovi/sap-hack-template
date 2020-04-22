@@ -46,8 +46,7 @@ resource "azurerm_network_interface" "jb-nic" {
           subnet_id = "${var.subnet_id}"
           private_ip_address_allocation = "Static"
           private_ip_address = "${var.private_ip}"
-          //public_ip_address_id = "${      azurerm_public_ip.jb-pip.id}"
-          public_ip_address_id = "${element(azurerm_public_ip.jb-pip.*.id,0)}"
+          public_ip_address_id = "${azurerm_public_ip.jb-pip.0.id}"
           //load_balancer_backend_address_pools_ids = ["${element(azurerm_lb_backend_address_pool.lb_pool.*.id,count.index)}"]
           //load_balancer_backend_address_pools_ids = "${azurerm_lb_backend_address_pool.lb_pool.*.id}"
       }
@@ -114,9 +113,5 @@ resource "azurerm_virtual_machine" "jb-vm" {
             computer_name =  "${var.vmname}"
             admin_username = "${var.adminuser}"
             //admin_password = "${var.adminpassword}"
-        }
-        os_profile_windows_config {
-            provision_vm_agent        = "${var.windows_vm_agent}"
-            enable_automatic_upgrades = "${var.windows_auto_upgrade}"
         }
 }
