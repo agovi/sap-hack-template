@@ -1,3 +1,10 @@
+jb_config = {
+    vmname = "jb-vm-0"
+    imageid = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-images-rg/providers/Microsoft.Compute/galleries/s4hana1809.sles12/images/XXX/versions/1.0.0"
+    privateip = "172.16.3.69"
+    vmsize = "Standard_D2s_v3"
+  }
+
 sbd_config = {
     vmname = "sbd-vm-0"
     imageid = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-images-rg/providers/Microsoft.Compute/galleries/s4hana1809.sles12/images/SBD/versions/1.0.0"

@@ -30,7 +30,23 @@ variable "vnetprefix" {
 }
 variable "subnetprefix" {
   description = "Address prefix for subnet"
-  default     = "172.16.3.0/24"
+  default     = "172.16.3.0/26"
+}
+variable "hubsubnetprefix" {
+  description = "Address prefix for Hub subnet"
+  default     = "172.16.3.64/26"
+}
+
+variable "jb_config" {
+  description = "Parameters requried to build Jumpbox VM"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
 }
 
 variable "sbd_config" {

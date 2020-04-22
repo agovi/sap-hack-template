@@ -5,6 +5,11 @@ resource "azurerm_resource_group" "sap-cluster-openhack" {
   name     = "${var.rgname}"
   location = "${var.location}"
 }
+resource "azurerm_network_security_group" "hub-nsg" {
+  name                = "hub-nsg"
+  location            = "${azurerm_resource_group.sap-cluster-openhack.location}"
+  resource_group_name = "${azurerm_resource_group.sap-cluster-openhack.name}"
+}
 resource "azurerm_network_security_group" "sap-vm-nsg" {
   name                = "nsg"
   location            = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -22,6 +27,20 @@ resource "azurerm_network_security_rule" "ssh-access-rule" {
   destination_address_prefix  = "*"
   resource_group_name         = "${azurerm_resource_group.sap-cluster-openhack.name}"
   network_security_group_name = "${azurerm_network_security_group.sap-vm-nsg.name}"
+}
+
+resource "azurerm_network_security_rule" "rdp-access-rule" {
+  name                        = "RDP"
+  priority                    = 101
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "3389"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.sap-cluster-openhack.name}"
+  network_security_group_name = "${azurerm_network_security_group.hub-nsg.name}"
 }
 
 resource "azurerm_network_security_rule" "sap-access-rule" {
@@ -43,6 +62,13 @@ resource "azurerm_virtual_network" "sap-vnet" {
   resource_group_name = "${azurerm_resource_group.sap-cluster-openhack.name}"
   location            = "${azurerm_resource_group.sap-cluster-openhack.location}"
   address_space       = "${var.vnetprefix}"
+}
+
+resource "azurerm_subnet" "hub-subnet" {
+  name                 = "hub-subnet"
+  resource_group_name  = "${azurerm_resource_group.sap-cluster-openhack.name}"
+  virtual_network_name = "${azurerm_virtual_network.sap-vnet.name}"
+  address_prefix       = "${var.hubsubnetprefix}"
 }
 
 resource "azurerm_subnet" "sap-subnet" {
@@ -84,6 +110,22 @@ module "hana-lb" {
   subnet   = "${azurerm_subnet.sap-subnet.id}"
 }
 
+module "create_jb_vm0" {
+  source        = "./createvm"
+  vm_depends_on = ["jbvm"]
+  vmtype        = "jb"
+  vmname        = "${var.jb_config["vmname"]}"
+  location      = "${azurerm_resource_group.sap-cluster-openhack.location}"
+  rgname        = "${azurerm_resource_group.sap-cluster-openhack.name}"
+  subnet_id     = "${azurerm_subnet.hub-subnet.id}"
+  vmsize        = "${var.jb_config["vmsize"]}"
+  adminuser     = "${var.adminuser}"
+  //adminpassword = "${var.adminpassword}"
+  sshkeypath = "${var.sshkeypath}"
+  private_ip = "${var.jb_config["privateip"]}"
+  image_id   = "${var.jb_config["imageid"]}"
+  lbid       = ""
+}
 module "create_sbd_vm0" {
   source        = "./createvm"
   vm_depends_on = ["sbdvm"]
