@@ -146,7 +146,7 @@ module "create_jb_vm0" {
   image_id   = "${var.jb_config["imageid"]}"
   lbid       = ""
 }
-
+/*
 module "create_sbd_vm0" {
   source        = "./createvm"
   vm_depends_on = ["sbdvm"]
@@ -347,3 +347,4 @@ module "appstart_app_vm" {
 }
 
 
+*/
