@@ -1,10 +1,10 @@
 variable "rgname" {
   description = "Name of the resource group to deploy the resources"
-  //default     = "sap-open-hack"
+  default     = "sap-open-hack2"
 }
 variable "location" {
   description = "Specify the location to deploy the resources"
-  //default     = "WestEurope"
+  default     = "WestEurope"
 }
 variable "adminuser" {
   description = "Username for logging in to the Virtual Machines"

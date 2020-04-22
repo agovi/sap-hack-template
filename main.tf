@@ -11,7 +11,7 @@ resource "azurerm_network_security_group" "hub-nsg" {
   resource_group_name = "${azurerm_resource_group.sap-cluster-openhack.name}"
 }
 resource "azurerm_network_security_group" "sap-vm-nsg" {
-  name                = "nsg"
+  name                = "sap-nsg"
   location            = "${azurerm_resource_group.sap-cluster-openhack.location}"
   resource_group_name = "${azurerm_resource_group.sap-cluster-openhack.name}"
 }
@@ -93,12 +93,12 @@ resource "azurerm_subnet" "sap-subnet" {
   address_prefix       = "${var.subnetprefix}"
 }
 
-resource "azurerm_subnet_network_security_group_association" "hub-ngs-assc" {
+resource "azurerm_subnet_network_security_group_association" "hub-nsg-assc" {
   subnet_id                 = "${azurerm_subnet.hub-subnet.id}"
   network_security_group_id = "${azurerm_network_security_group.hub-nsg.id}"
 }
 
-resource "azurerm_subnet_network_security_group_association" "sap-ngs-assc" {
+resource "azurerm_subnet_network_security_group_association" "sap-nsg-assc" {
   subnet_id                 = "${azurerm_subnet.sap-subnet.id}"
   network_security_group_id = "${azurerm_network_security_group.sap-vm-nsg.id}"
 }
@@ -133,7 +133,7 @@ module "hana-lb" {
 module "create_jb_vm0" {
   source        = "./createvm"
   vm_depends_on = ["jbvm"]
-  vmtype        = "jb"
+  vmtype        = "jbvm"
   vmname        = "${var.jb_config["vmname"]}"
   location      = "${azurerm_resource_group.sap-cluster-openhack.location}"
   rgname        = "${azurerm_resource_group.sap-cluster-openhack.name}"
@@ -146,6 +146,7 @@ module "create_jb_vm0" {
   image_id   = "${var.jb_config["imageid"]}"
   lbid       = ""
 }
+
 module "create_sbd_vm0" {
   source        = "./createvm"
   vm_depends_on = ["sbdvm"]
