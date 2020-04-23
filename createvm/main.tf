@@ -22,7 +22,8 @@ resource "azurerm_public_ip" "jb-pip" {
     allocation_method = "Dynamic"
 }
 resource "azurerm_network_interface" "sapnw-nic" {
-      count = "${var.vmtype == "jbvm" ? "0" : "1"}"  
+      count = "${var.vmtype == "jbvm" ? "0" : "1"}" 
+      depends_on = ["var.vm_depends_on"]
       name = "${var.vmname}"
       location  = "${var.location}"
       resource_group_name = "${var.rgname}"

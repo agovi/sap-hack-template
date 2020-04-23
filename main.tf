@@ -84,13 +84,16 @@ resource "azurerm_subnet" "hub-subnet" {
   resource_group_name  = "${azurerm_resource_group.sap-cluster-openhack.name}"
   virtual_network_name = "${azurerm_virtual_network.sap-vnet.name}"
   address_prefix       = "${var.hubsubnetprefix}"
-}
+  //network_security_group_id = "${azurerm_network_security_group.hub-nsg.id}"
+ }
 
 resource "azurerm_subnet" "sap-subnet" {
   name                 = "sap-subnet"
   resource_group_name  = "${azurerm_resource_group.sap-cluster-openhack.name}"
   virtual_network_name = "${azurerm_virtual_network.sap-vnet.name}"
   address_prefix       = "${var.sapsubnetprefix}"
+  //network_security_group_id = "${azurerm_network_security_group.sap-vm-nsg.id}"
+  depends_on = [azurerm_subnet.hub-subnet]
 }
 
 resource "azurerm_subnet_network_security_group_association" "hub-nsg-assc" {
@@ -149,7 +152,7 @@ module "create_jb_vm0" {
 
 module "create_sbd_vm0" {
   source        = "./createvm"
-  vm_depends_on = ["sbdvm"]
+  vm_depends_on = ["${azurerm_subnet_network_security_group_association.sap-nsg-assc.id}"]
   vmtype        = "sbd"
   vmname        = "${var.sbd_config["vmname"]}"
   location      = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -163,6 +166,7 @@ module "create_sbd_vm0" {
   image_id   = "${var.sbd_config["imageid"]}"
   lbid       = ""
 }
+
 module "create_nfs_vm0" {
   source        = "./createvm"
   vm_depends_on = ["${module.create_sbd_vm0.vmoutput}", "${module.nfs-lb.lboutput}"]
