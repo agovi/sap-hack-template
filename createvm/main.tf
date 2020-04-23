@@ -114,6 +114,10 @@ resource "azurerm_virtual_machine" "jb-vm" {
         os_profile {
             computer_name =  "${var.vmname}"
             admin_username = "${var.adminuser}"
-            //admin_password = "${var.adminpassword}"
+            admin_password = "${var.adminpassword}"
         }
+        os_profile_windows_config {
+            provision_vm_agent        = "true"
+            enable_automatic_upgrades = "false"
+  }
 }

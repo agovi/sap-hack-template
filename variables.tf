@@ -1,6 +1,6 @@
 variable "rgname" {
   description = "Name of the resource group to deploy the resources"
-  default     = "sap-open-hack2"
+  default     = "sap-open-hack3"
 }
 variable "location" {
   description = "Specify the location to deploy the resources"
@@ -10,13 +10,13 @@ variable "adminuser" {
   description = "Username for logging in to the Virtual Machines"
   default     = "azureuser"
 }
-/*variable "adminpassword" {
-  description = "Password for logging in to the Virtual Machines"
+variable "adminpassword" {
+  description = "Password for logging in to the Windows jumpbox"
 }
-*/
+
 
 variable "sshkeypath" {
-  description = "Path for the SSH keys to be used"
+  description = "Path for the SSH keys to be used for passwordless login to Linux VMs"
   //default     = "~/.ssh/id_rsa.pub"
 }
 variable "tags" {
@@ -28,7 +28,7 @@ variable "vnetprefix" {
   description = "Address prefix for the VNET"
   default     = ["172.16.3.0/24"]
 }
-variable "subnetprefix" {
+variable "sapsubnetprefix" {
   description = "Address prefix for subnet"
   default     = "172.16.3.0/26"
 }

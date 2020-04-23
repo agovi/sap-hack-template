@@ -12,12 +12,14 @@ variable "adminuser" {
   description = "Username for logging in to the Virtual Machines"
 }
 
-/*variable "adminpassword" {
+variable "adminpassword" {
   description = "Password for logging in to the Virtual Machines"
-}*/
+  default     = ""
+}
 
 variable "sshkeypath" {
   description = "Path for the SSH keys to be used"
+  default     = ""
 }
 
 variable "tags" {

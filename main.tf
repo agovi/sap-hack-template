@@ -18,7 +18,7 @@ resource "azurerm_network_security_group" "sap-vm-nsg" {
 
 resource "azurerm_network_security_rule" "rdp-access-rule" {
   name                        = "RDP"
-  priority                    = 110
+  priority                    = 100
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
@@ -38,7 +38,7 @@ resource "azurerm_network_security_rule" "ssh-access-rule" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "22"
-  source_address_prefix       = "172.16.3.64/26"
+  source_address_prefix       = "${var.hubsubnetprefix}"
   destination_address_prefix  = "*"
   resource_group_name         = "${azurerm_resource_group.sap-cluster-openhack.name}"
   network_security_group_name = "${azurerm_network_security_group.sap-vm-nsg.name}"
@@ -46,13 +46,13 @@ resource "azurerm_network_security_rule" "ssh-access-rule" {
 
 resource "azurerm_network_security_rule" "sap-access-rule" {
   name                        = "SAP ports"
-  priority                    = 120
+  priority                    = 110
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_ranges     = ["3200", "3600", "3900", "3300"]
-  source_address_prefix       = "172.16.3.64/26"
+  source_address_prefix       = "${var.hubsubnetprefix}"
   destination_address_prefix  = "*"
   resource_group_name         = "${azurerm_resource_group.sap-cluster-openhack.name}"
   network_security_group_name = "${azurerm_network_security_group.sap-vm-nsg.name}"
@@ -60,13 +60,13 @@ resource "azurerm_network_security_rule" "sap-access-rule" {
 
 resource "azurerm_network_security_rule" "HANA-access-rule" {
   name                        = "HANA ports"
-  priority                    = 130
+  priority                    = 120
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_ranges     = ["30015", "50013", "50014"]
-  source_address_prefix       = "172.16.3.64/26"
+  source_address_prefix       = "${var.hubsubnetprefix}"
   destination_address_prefix  = "*"
   resource_group_name         = "${azurerm_resource_group.sap-cluster-openhack.name}"
   network_security_group_name = "${azurerm_network_security_group.sap-vm-nsg.name}"
@@ -90,7 +90,7 @@ resource "azurerm_subnet" "sap-subnet" {
   name                 = "sap-subnet"
   resource_group_name  = "${azurerm_resource_group.sap-cluster-openhack.name}"
   virtual_network_name = "${azurerm_virtual_network.sap-vnet.name}"
-  address_prefix       = "${var.subnetprefix}"
+  address_prefix       = "${var.sapsubnetprefix}"
 }
 
 resource "azurerm_subnet_network_security_group_association" "hub-nsg-assc" {
@@ -132,7 +132,7 @@ module "hana-lb" {
 
 module "create_jb_vm0" {
   source        = "./createvm"
-  vm_depends_on = ["jbvm"]
+  vm_depends_on = ["${azurerm_subnet_network_security_group_association.hub-nsg-assc.id}"]
   vmtype        = "jbvm"
   vmname        = "${var.jb_config["vmname"]}"
   location      = "${azurerm_resource_group.sap-cluster-openhack.location}"
@@ -140,13 +140,13 @@ module "create_jb_vm0" {
   subnet_id     = "${azurerm_subnet.hub-subnet.id}"
   vmsize        = "${var.jb_config["vmsize"]}"
   adminuser     = "${var.adminuser}"
-  //adminpassword = "${var.adminpassword}"
-  sshkeypath = "${var.sshkeypath}"
+  adminpassword = "${var.adminpassword}"
+  //sshkeypath = "${var.sshkeypath}"
   private_ip = "${var.jb_config["privateip"]}"
   image_id   = "${var.jb_config["imageid"]}"
   lbid       = ""
 }
-/*
+
 module "create_sbd_vm0" {
   source        = "./createvm"
   vm_depends_on = ["sbdvm"]
@@ -345,6 +345,3 @@ module "appstart_app_vm" {
   rgname           = "${azurerm_resource_group.sap-cluster-openhack.name}"
   vmtype           = "app"
 }
-
-
-*/
