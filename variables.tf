@@ -3,7 +3,7 @@ variable "rgname" {
   //default     = "SAP-Open-hack"
 }
 variable "location" {
-  description = "Specify the location to deploy the resources"
+  description = "Specify Azure Region to deploy the resources (eg WestEurope)"
   //default     = "WestEurope"
 }
 variable "adminuser" {
@@ -16,7 +16,7 @@ variable "adminpassword" {
 
 
 variable "sshkeypath" {
-  description = "Path for the SSH keys to be used for passwordless login to Linux VMs"
+  description = "Path for the SSH keys to be used for passwordless login to Linux VMs (eg ~/.ssh/id_rsa.pub)"
   //default     = "~/.ssh/id_rsa.pub"
 }
 variable "tags" {
@@ -26,7 +26,7 @@ variable "tags" {
 }
 variable "vnetprefix" {
   description = "Address prefix for the VNET"
-  default     = ["172.16.3.0/24,172.16.4.0/24"]
+  default     = ["172.16.3.0/24", "172.16.4.0/24"]
 }
 variable "sapsubnetprefix" {
   description = "Address prefix for subnet"

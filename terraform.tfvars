@@ -1,6 +1,6 @@
 jb_config = {
     vmname = "win-jumpbox"
-    imageid = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-images-rg/providers/Microsoft.Compute/galleries/s4hana1809.sles12/images/win-jumpbox/versions/1.0.0"
+    imageid = "/subscriptions/afbba066-2190-4c21-b9ec-4a945b7bfbcc/resourceGroups/sap-images-rg/providers/Microsoft.Compute/galleries/s4hana1809.sles12/images/win-jumpbox"
     privateip = "172.16.4.5"
     vmsize = "Standard_D2s_v3"
   }
