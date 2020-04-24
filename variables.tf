@@ -26,15 +26,15 @@ variable "tags" {
 }
 variable "vnetprefix" {
   description = "Address prefix for the VNET"
-  default     = ["172.16.3.0/24"]
+  default     = ["172.16.3.0/24,172.16.4.0/24"]
 }
 variable "sapsubnetprefix" {
   description = "Address prefix for subnet"
-  default     = "172.16.3.0/26"
+  default     = "172.16.3.0/24"
 }
 variable "hubsubnetprefix" {
   description = "Address prefix for Hub subnet"
-  default     = "172.16.3.64/26"
+  default     = "172.16.4.0/26"
 }
 
 variable "jb_config" {
