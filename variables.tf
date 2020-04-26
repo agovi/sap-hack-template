@@ -1,6 +1,6 @@
 variable "rgname" {
   description = "Name of the resource group to deploy the resources"
-  //default     = "SAP-Open-hack"
+  default     = "SAP-Open-hack"
 }
 variable "location" {
   description = "Specify Azure Region to deploy the resources (eg WestEurope)"

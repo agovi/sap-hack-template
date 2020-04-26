@@ -1,14 +1,14 @@
 
 resource "azurerm_lb" "sap-lb" {
-    name = "${var.vmtype}-lb"
-    location = "${var.location}"
-    resource_group_name = "${var.rgname}"
-    frontend_ip_configuration {
-        name = "${var.vmtype}-frontend"
-        subnet_id = "${var.subnet}"
-        private_ip_address_allocation = "Static"
-        private_ip_address = "${var.lbpip}"
-    }
+  name                = "${var.vmtype}-lb"
+  location            = "${var.location}"
+  resource_group_name = "${var.rgname}"
+  frontend_ip_configuration {
+    name                          = "${var.vmtype}-frontend"
+    subnet_id                     = "${var.subnet}"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = "${var.lbpip}"
+  }
 }
 
 resource "azurerm_lb_backend_address_pool" "lb_pool" {
@@ -25,7 +25,7 @@ resource "azurerm_lb_probe" "lb_probe" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_nfs_20048T" {
-  count = "${ ("${var.vmtype}" == "nfs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "nfs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-20048"
@@ -39,7 +39,7 @@ resource "azurerm_lb_rule" "lb_rule_nfs_20048T" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_nfs_20048U" {
-  count = "${ ("${var.vmtype}" == "nfs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "nfs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-20048-U"
@@ -53,7 +53,7 @@ resource "azurerm_lb_rule" "lb_rule_nfs_20048U" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_nfs_2049U" {
-  count = "${ ("${var.vmtype}" == "nfs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "nfs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-2049-U"
@@ -67,7 +67,7 @@ resource "azurerm_lb_rule" "lb_rule_nfs_2049U" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_nfs_2049T" {
-  count = "${ ("${var.vmtype}" == "nfs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "nfs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-2049-T"
@@ -81,7 +81,7 @@ resource "azurerm_lb_rule" "lb_rule_nfs_2049T" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_hana" {
-  count = "${ ("${var.vmtype}" == "hana") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "hana") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-30013"
@@ -92,11 +92,11 @@ resource "azurerm_lb_rule" "lb_rule_hana" {
   enable_floating_ip             = true
   backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
   probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
-  idle_timeout_in_minutes        =  30
+  idle_timeout_in_minutes        = 30
 }
 
 resource "azurerm_lb_rule" "lb_rule_hana_30015" {
-  count = "${ ("${var.vmtype}" == "hana") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "hana") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-30015"
@@ -107,11 +107,11 @@ resource "azurerm_lb_rule" "lb_rule_hana_30015" {
   enable_floating_ip             = true
   backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
   probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
-  idle_timeout_in_minutes        =  30
+  idle_timeout_in_minutes        = 30
 }
 
 resource "azurerm_lb_rule" "lb_rule_hana_50013" {
-  count = "${ ("${var.vmtype}" == "hana") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "hana") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-50013"
@@ -122,11 +122,11 @@ resource "azurerm_lb_rule" "lb_rule_hana_50013" {
   enable_floating_ip             = true
   backend_address_pool_id        = "${azurerm_lb_backend_address_pool.lb_pool.id}"
   probe_id                       = "${azurerm_lb_probe.lb_probe.id}"
-  idle_timeout_in_minutes        =  30
+  idle_timeout_in_minutes        = 30
 }
 
 resource "azurerm_lb_rule" "lb_rule_xscs_32xx" {
-  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "xscs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-3200"
@@ -140,7 +140,7 @@ resource "azurerm_lb_rule" "lb_rule_xscs_32xx" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_xscs_36xx" {
-  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "xscs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-3600"
@@ -154,7 +154,7 @@ resource "azurerm_lb_rule" "lb_rule_xscs_36xx" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_xscs_39xx" {
-  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "xscs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-3900"
@@ -168,7 +168,7 @@ resource "azurerm_lb_rule" "lb_rule_xscs_39xx" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_xscs_81xx" {
-  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "xscs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-8100"
@@ -182,7 +182,7 @@ resource "azurerm_lb_rule" "lb_rule_xscs_81xx" {
 }
 
 resource "azurerm_lb_rule" "lb_rule_xscs_5xx13" {
-  count = "${ ("${var.vmtype}" == "xscs") ? "1":"0"}"    
+  count                          = "${("${var.vmtype}" == "xscs") ? "1" : "0"}"
   resource_group_name            = "${var.rgname}"
   loadbalancer_id                = "${azurerm_lb.sap-lb.id}"
   name                           = "lb-50013"

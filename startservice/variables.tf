@@ -1,19 +1,19 @@
 variable "vmname" {
-    description = "Name of the VM"
+  description = "Name of the VM"
 }
 variable "vmtype" {
-    description = "Type of the VM"
-  
+  description = "Type of the VM"
+
 }
 variable "location" {
-    description = "Location for the VM"
+  description = "Location for the VM"
 }
 variable "rgname" {
-    description = "Resource group of the VM"
-  
+  description = "Resource group of the VM"
+
 }
 variable "vmext_depends_on" {
-  type = any
+  type    = any
   default = null
 }
 
