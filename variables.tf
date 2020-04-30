@@ -1,22 +1,22 @@
 variable "rgname" {
   description = "Name of the resource group to deploy the resources"
-  default     = "sap-openhack"
+  default     = "SAP-Open-hack"
 }
 variable "location" {
-  description = "Specify the location to deploy the resources"
+  description = "Specify Azure Region to deploy the resources (eg WestCentralUS EastUS2 CanadaCentral FranceCentral WestEurope NorthEurope)"
   //default     = "WestEurope"
 }
 variable "adminuser" {
   description = "Username for logging in to the Virtual Machines"
   default     = "azureuser"
 }
-/*variable "adminpassword" {
-  description = "Password for logging in to the Virtual Machines"
+variable "adminpassword" {
+  description = "Password for logging in to the Windows jumpbox"
 }
-*/
+
 
 variable "sshkeypath" {
-  description = "Path for the SSH keys to be used"
+  description = "Path for the SSH keys to be used for passwordless login to Linux VMs (eg ~/.ssh/id_rsa.pub)"
   //default     = "~/.ssh/id_rsa.pub"
 }
 variable "tags" {
@@ -26,11 +26,27 @@ variable "tags" {
 }
 variable "vnetprefix" {
   description = "Address prefix for the VNET"
-  default     = ["172.16.3.0/24"]
+  default     = ["172.16.3.0/24", "172.16.4.0/24"]
 }
-variable "subnetprefix" {
+variable "sapsubnetprefix" {
   description = "Address prefix for subnet"
   default     = "172.16.3.0/24"
+}
+variable "hubsubnetprefix" {
+  description = "Address prefix for Hub subnet"
+  default     = "172.16.4.0/26"
+}
+
+variable "jb_config" {
+  description = "Parameters requried to build Jumpbox VM"
+  type        = "map"
+  default = {
+    vmname    = ""
+    imageid   = ""
+    privateip = ""
+    vmsize    = ""
+
+  }
 }
 
 variable "sbd_config" {
