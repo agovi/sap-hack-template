@@ -3,7 +3,7 @@ variable "rgname" {
   default     = "SAP-Open-hack"
 }
 variable "location" {
-  description = "Specify Azure Region to deploy the resources (eg WestCentralUS EastUS2 CanadaCentral FranceCentral WestEurope NorthEurope)"
+  description = "Specify Azure Region to deploy the resources (eg EastUS2 CanadaCentral FranceCentral WestEurope NorthEurope WestCentralUS**)"
   //default     = "WestEurope"
 }
 variable "adminuser" {
