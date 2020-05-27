@@ -7,6 +7,10 @@ cluster_restart () {
     crm cluster stop
     echo "Start Cluster"
     crm cluster start
+    if [ $? != 0 ];then
+        echo "Cluster could not be started. Check logs"
+        exit 1
+    fi
     echo "Status of cluster"
     crm cluster status
 }
@@ -16,6 +20,10 @@ cluster_maintmode () {
     ## Wait for cluster services to start before removing maintenance mode
     sleep 10
     crm configure property maintenance-mode=false
+    if [ $? != 0 ];then
+        echo "Cluster could not be taken out of maintenance mode. Check logs"
+        exit 1
+    fi
     ## Wait for cluster resources to start
     sleep 10
     crm status
@@ -29,49 +37,95 @@ app_start () {
 echo "Starting SAP app server"
 sleep 30
 mount -a
+
 echo "Check if /sapmnt is mounted"
-if [ ! -f "/sapmnt/TST/profile/DEFAULT.PFL" ];then
+flag=0
 retry=0
-    until [ $retry -ge 5 ]
-    do
-    echo "Waiting for /sapmnt to be available"
-    sleep 5
-       if [ -f "/sapmnt/TST/profile/DEFAULT.PFL" ];then
-       break
-       fi
-    retry=$retry + 1
-    done
-else 
-  echo "sapmnt is available"
+until [ $retry -ge 5 ]
+do
+    if [ -f "/sapmnt/TST/profile/DEFAULT.PFL" ];then
+      flag=1
+      break
+    else
+      echo "Waiting for /sapmnt to be available"
+      sleep 5
+    fi
+retry=$(($retry+1))
+done
+if [ $flag == 1 ];then
+echo "sapmnt is available"
+else
+echo "Sapmnt is not available. Check logs"
+exit 1
+fi
+
+echo "Check if ASCS connectivity is working"
+flag=0
+retry=0
+until [ "$retry" -ge 5 ]
+do
+    nc -z -v -w5 tstascs 3600
+    if [ "$?" == 0 ];then
+        flag=1
+        break
+    else
+        echo "Waiting for ASCS to connection to be available"
+        sleep 5
+    fi
+retry=$(($retry+1))
+done
+if [ $flag == 1 ];then
+echo "ASCS connectivity is working"
+else
+echo "ASCS connectivity is working is failing. Check logs"
+exit 1
 fi
 
 echo "Check if R3trans is working"
-rcount=$(su - tstadm -c "R3trans -d | grep -i 0000 | wc -l")
-if [ "$rcount" != 1 ];then
+flag=0
 retry=0
-    until [ "$retry" -ge 5 ]
-    do
-    echo "Waiting for R3trans to be available"
-    sleep 10
-       rcount=$(su - tstadm -c "R3trans -d | grep -i 0000 | wc -l")
-       if [ "$rcount" == 1 ];then
-       break
-       fi
-    retry=$retry + 1
-    done
-else 
-  echo "R3trans is working"
-fi
-su - tstadm -c "/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function StartService TST"
-sleep 5
-su - tstadm -c "/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function Start"
-sleep 5
-pcount=$(ps -ef | grep -i dw | wc -l)
-    if [ "$pcount" -gt 5 ];then
-    echo "SAP applications started"
-    exit
+until [ "$retry" -ge 5 ]
+do
+    rcount=$(su - tstadm -c "R3trans -d | grep -i 0000 | wc -l")
+    if [ "$rcount" == 1 ];then
+        flag=1
+        break
+    else
+        echo "Waiting for R3trans to be available"
+        sleep 5
     fi
-echo "SAP couldn't be started. Please check logs"        
+retry=$(($retry+1))
+done
+if [ $flag == 1 ];then
+echo "R3trans is working"
+else
+echo "R3trans connectivity to databse is failing. Check logs"
+exit 1
+fi
+
+su - tstadm -c "/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function StartService TST"
+su - tstadm -c "/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function Start"
+flag=0
+until [ "$retry" -ge 5 ]
+do
+    pcount=$(ps -ef | grep -i dw | wc -l)
+    if [ "$pcount" -gt 10 ];then
+        flag=1
+        break
+    else
+        echo "Waiting for SAP to to be available"
+        sleep 5
+    fi
+retry=$(($retry+1))
+done
+
+if [ $flag == 1 ];then
+echo "SAP started successfully"
+else
+echo "SAP could not be started. Check logs"
+exit 1
+fi
+    
 }
 
 ##Main program##
