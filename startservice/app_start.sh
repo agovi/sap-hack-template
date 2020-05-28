@@ -25,12 +25,29 @@ cluster_maintmode () {
         exit 1
     fi
     ## Wait for cluster resources to start
+    echo "Waiting for cluster resoures to start"
     sleep 10
     crm status
-    ##if [ $hostname == "tst-xscs-vm-1"];then
-    ##    echo "cleanup any errors in ERS resource"       
-    ##   crm resource cleanup rsc_sap_TST_ERS02
-    ##fi
+    flag=0
+    retry=0
+    until [ "$retry" -ge 10 ]
+    do
+    status=$(crm status | grep -i stopped | wc -l)
+    if [ "$status" == 0 ];then
+        flag=1
+        break
+    else
+        echo "Waiting for cluster resources to start"
+        sleep 5
+    fi
+    retry=$(($retry+1))
+    done
+    if [ $flag == 1 ];then
+    echo "Cluster resources started"
+    else
+    echo "Cluster resources are in stopped state. Check logs"
+    exit 1
+    fi
 }
 
 app_start () {
@@ -84,7 +101,7 @@ fi
 echo "Check if R3trans is working"
 flag=0
 retry=0
-until [ "$retry" -ge 5 ]
+until [ "$retry" -ge 10 ]
 do
     rcount=$(su - tstadm -c "R3trans -d | grep -i 0000 | wc -l")
     if [ "$rcount" == 1 ];then
@@ -108,7 +125,7 @@ sleep 5
 su - tstadm -c "/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function Start"
 flag=0
 retry=0
-until [ "$retry" -ge 5 ]
+until [ "$retry" -ge 10 ]
 do
     pcount=$(ps -ef | grep -i dw | wc -l)
     if [ "$pcount" -gt 10 ];then
