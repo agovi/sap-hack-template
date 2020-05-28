@@ -104,8 +104,10 @@ exit 1
 fi
 
 su - tstadm -c "/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function StartService TST"
+sleep 5
 su - tstadm -c "/usr/sap/TST/D00/exe/sapcontrol -nr 00 -function Start"
 flag=0
+retry=0
 until [ "$retry" -ge 5 ]
 do
     pcount=$(ps -ef | grep -i dw | wc -l)
