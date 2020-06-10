@@ -101,7 +101,7 @@ fi
 echo "Check if R3trans is working"
 flag=0
 retry=0
-until [ "$retry" -ge 10 ]
+until [ "$retry" -ge 60 ]
 do
     rcount=$(su - tstadm -c "R3trans -d | grep -i 0000 | wc -l")
     if [ "$rcount" == 1 ];then
