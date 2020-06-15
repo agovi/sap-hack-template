@@ -79,7 +79,7 @@ fi
 echo "Check if ASCS connectivity is working"
 flag=0
 retry=0
-until [ "$retry" -ge 5 ]
+until [ "$retry" -ge 30 ]
 do
     nc -z -v -w5 tstascs 3600
     if [ "$?" == 0 ];then
